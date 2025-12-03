@@ -29,7 +29,7 @@ fn next_invalid(n: N) -> N {
     match below.cmp(&above) {
         Ordering::Less => n - below + above,
         Ordering::Equal => n,
-        Ordering::Greater => below + below * ten_pow,
+        Ordering::Greater => (above + 1) * (1 + ten_pow),
     }
 }
 
