@@ -1,8 +1,8 @@
 [package]
-name = "day01-2"
+name = "day02"
+version = "0.1.0"
 edition = "2024"
-authors.workspace = true
-version.workspace = true
 
 [dependencies]
 aoc = { workspace = true }
+rstest = { workspace = true }

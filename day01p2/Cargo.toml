@@ -1,0 +1,8 @@
+[package]
+name = "day01p2"
+edition = "2024"
+authors.workspace = true
+version.workspace = true
+
+[dependencies]
+aoc = { workspace = true }

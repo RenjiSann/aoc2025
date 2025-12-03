@@ -1,0 +1,52 @@
+[package]
+name = "aoc-2026"
+edition = "2024"
+
+[workspace]
+resolver = "3"
+members = [
+	"./aoc/",
+	"./day01/",
+	"./day01p2/",
+	"./day02/",
+]
+
+[workspace.package]
+authors = [""]
+version = "0.1.0"
+
+[workspace.dependencies]
+aoc = { version = "0.1.0", path = "./aoc/"}
+rstest = "0.26.1"
+
+[dependencies]
+aoc = { version = "0.1.0", path = "./aoc/"}
+rstest = "0.26.1"
+
+[[bin]]
+name = "day01"
+path = "./day01/src/main.rs"
+
+[[bin]]
+name = "day01p2"
+path = "./day01p2/src/main.rs"
+
+[[bin]]
+name = "day02"
+path = "./day02/src/main.rs"
+
+[[bin]]
+name = "day03"
+path = "./day03/src/main.rs"
+
+[[bin]]
+name = "day04"
+path = "./day04/src/main.rs"
+
+[[bin]]
+name = "day05"
+path = "./day05/src/main.rs"
+
+[[bin]]
+name = "day06"
+path = "./day06/src/main.rs"
