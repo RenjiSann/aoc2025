@@ -1,3 +1,5 @@
+#![feature(yield_expr)]
+#![feature(gen_blocks)]
 use std::cmp::Ordering;
 
 use aoc;
@@ -11,13 +13,13 @@ fn nb_digits(n: N) -> u32 {
     (n as f64).log10().floor() as u32 + 1
 }
 
-fn divisors(n: u32) -> impl Iterator<Item = u32> {
+fn divisors_under_root(n: u32) -> impl Iterator<Item = u32> {
     gen move {
         for i in 1..=(n as f64).sqrt().floor() as u32 {
             if n % i == 0 {
                 yield i;
                 let ni = n / i;
-                if ni != i {
+                if ni != i && ni != n {
                     yield ni;
                 }
             }
@@ -27,7 +29,26 @@ fn divisors(n: u32) -> impl Iterator<Item = u32> {
 
 fn is_invalid(n: N) -> bool {
     let nb_digits = nb_digits(n);
-    for div in divisors(nb_digits) {}
+    if nb_digits == 1 {
+        return false;
+    }
+    for div in divisors_under_root(nb_digits) {
+        let pattern = n % ((10 as N).pow(div));
+
+        if pattern == 0 {
+            continue;
+        }
+
+        let multiple: u64 = (0..nb_digits / div)
+            .map(|i| pattern * (10 as N).pow(i * div))
+            .sum();
+
+        if n % multiple == 0 {
+            return true;
+        }
+    }
+
+    false
 }
 
 fn next_invalid(n: N) -> N {
@@ -64,13 +85,11 @@ fn main() {
 
             let mut i = a;
 
-            while i <= b {
-                let inv = next_invalid(i);
-                println!("new invalid: {inv}, (in: {})", (a..=b).contains(&inv));
-                if inv <= b {
-                    sum += inv;
+            for i in a..=b {
+                if is_invalid(i) {
+                    println!("new invalid: {i}, (in: {})", (a..=b).contains(&i));
+                    sum += i;
                 }
-                i = inv + 1
             }
         }
     }
