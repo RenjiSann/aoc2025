@@ -27,45 +27,39 @@ fn divisors_under_root(n: u32) -> impl Iterator<Item = u32> {
     }
 }
 
-fn is_invalid(n: N) -> bool {
-    let nb_digits = nb_digits(n);
-    if nb_digits == 1 {
-        return false;
-    }
-    for div in divisors_under_root(nb_digits) {
-        let pattern = n % ((10 as N).pow(div));
-
-        if pattern == 0 {
-            continue;
-        }
-
-        let multiple: u64 = (0..nb_digits / div)
-            .map(|i| pattern * (10 as N).pow(i * div))
-            .sum();
-
-        if n % multiple == 0 {
-            return true;
-        }
-    }
-
-    false
-}
-
 fn next_invalid(n: N) -> N {
+    if n < 10 {
+        return 11;
+    }
+
     let digits = nb_digits(n);
-    if digits % 2 != 0 {
-        return N::pow(10, digits) + N::pow(10, digits / 2);
-    }
-    let ten_pow = N::pow(10, digits / 2);
+    let mut lowest = N::MAX;
 
-    let below = n % ten_pow;
-    let above = n / ten_pow;
+    let pow10 = |x| (10 as N).pow(x);
 
-    match below.cmp(&above) {
-        Ordering::Less => n - below + above,
-        Ordering::Equal => n,
-        Ordering::Greater => (above + 1) * (1 + ten_pow),
+    for div in divisors_under_root(digits)
+        .collect::<Vec<_>>()
+        .into_iter()
+        .rev()
+    {
+        // retrieve highest part of the digit
+        let mut high = n / pow10(digits - div);
+
+        let mut repeated: u64 = (0..digits / div).map(|i| high * pow10(i * div)).sum();
+
+        // check that high_high_high_high.... is higher
+        loop {
+            if repeated >= n {
+                break;
+            }
+            high += 1;
+            repeated = (0..digits / div).map(|i| high * pow10(i * div)).sum();
+        }
+
+        lowest = lowest.min(repeated);
     }
+
+    lowest
 }
 
 fn main() {
@@ -85,11 +79,13 @@ fn main() {
 
             let mut i = a;
 
-            for i in a..=b {
-                if is_invalid(i) {
-                    println!("new invalid: {i}, (in: {})", (a..=b).contains(&i));
-                    sum += i;
+            while i <= b {
+                let inv = next_invalid(i);
+                if inv <= b {
+                    println!("new invalid: {inv}, (in: {})", (a..=b).contains(&inv));
+                    sum += inv;
                 }
+                i = inv + 1
             }
         }
     }
