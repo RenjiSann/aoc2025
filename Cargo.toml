@@ -12,6 +12,7 @@ members = [
 	"./day02p2/",
 	"./day03/",
 	"./day03p2/",
+	"./day04/",
 ]
 
 [workspace.package]
