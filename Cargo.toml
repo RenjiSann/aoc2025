@@ -13,6 +13,7 @@ members = [
 	"./day03/",
 	"./day03p2/",
 	"./day04/",
+	"./day04p2/",
 ]
 
 [workspace.package]
@@ -56,9 +57,13 @@ name = "day04"
 path = "./day04/src/main.rs"
 
 [[bin]]
-name = "day05"
-path = "./day05/src/main.rs"
+name = "day04p2"
+path = "./day04p2/src/main.rs"
 
-[[bin]]
-name = "day06"
-path = "./day06/src/main.rs"
+# [[bin]]
+# name = "day05"
+# path = "./day05/src/main.rs"
+# 
+# [[bin]]
+# name = "day06"
+# path = "./day06/src/main.rs"
